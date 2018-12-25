@@ -1,6 +1,4 @@
-import { Service } from 'typedi';
-
-import { BaseGame, BaseGameData, BaseGameMove, BaseGamePlayer, MakingMoveError } from 'z-games-base-game';
+import { BaseGame, BaseGameData, BaseGameMove, BaseGamePlayer } from 'z-games-base-game';
 
 const PLAYERS_MIN = 1; // TODO: 3
 const PLAYERS_MAX = 5;
@@ -28,8 +26,12 @@ export interface NoThanksMove extends BaseGameMove {
   takeCard: boolean;
 }
 
-@Service()
 export class NoThanks extends BaseGame {
+  private static instance: NoThanks;
+
+  public static get Instance() {
+    return this.instance || (this.instance = new this());
+  }
 
   public getNewGame = (): { playersMax: number, playersMin: number, gameData: string } => {
     const gameData: NoThanksData = {
@@ -126,7 +128,7 @@ export class NoThanks extends BaseGame {
       currentCardCost = 0;
     } else {
       if (!players[playerNumber].chips) {
-        throw new MakingMoveError('You have no chips to pay');
+        throw new Error('You have no chips to pay');
       }
 
       players[playerNumber].chips--;
