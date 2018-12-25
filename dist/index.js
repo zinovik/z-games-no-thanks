@@ -1,12 +1,5 @@
 "use strict";
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
 Object.defineProperty(exports, "__esModule", { value: true });
-const typedi_1 = require("typedi");
 const z_games_base_game_1 = require("z-games-base-game");
 const PLAYERS_MIN = 1; // TODO: 3
 const PLAYERS_MAX = 5;
@@ -14,7 +7,7 @@ const MIN_NUMBER = 3;
 const MAX_NUMBER = 35;
 const START_CHIPS_COUNT = 11;
 const EXCESS_CARDS_NUMBER = 9;
-let NoThanks = class NoThanks extends z_games_base_game_1.BaseGame {
+class NoThanks extends z_games_base_game_1.BaseGame {
     constructor() {
         super(...arguments);
         this.getNewGame = () => {
@@ -81,7 +74,7 @@ let NoThanks = class NoThanks extends z_games_base_game_1.BaseGame {
             }
             else {
                 if (!players[playerNumber].chips) {
-                    throw new z_games_base_game_1.MakingMoveError('You have no chips to pay');
+                    throw new Error('You have no chips to pay');
                 }
                 players[playerNumber].chips--;
                 currentCardCost++;
@@ -153,8 +146,8 @@ let NoThanks = class NoThanks extends z_games_base_game_1.BaseGame {
             return playerNumber;
         };
     }
-};
-NoThanks = __decorate([
-    typedi_1.Service()
-], NoThanks);
+    static get Instance() {
+        return this.instance || (this.instance = new this());
+    }
+}
 exports.NoThanks = NoThanks;
