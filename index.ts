@@ -160,22 +160,17 @@ export class NoThanks extends BaseGame {
     };
   }
 
-  public getRules = (): string => {
-    const rules = `No Thanks! is a card game for three to five players designed by Thorsten Gimmler.
-Originally called Geschenkt! (presented (as a gift) in German) and published by Amigo Spiele in 2004, it was translated into English by Z-Man Games.
+  public getRules = (): string[] => {
+    const rules = [];
 
-There are playing cards numbered 3 to 35 in the game, and nine cards are removed from the deck.
-Each player receives 11 chips. The first player flips over the top card and either takes it (earning him points according to the value)
-or passes on the card by paying a chip (placing it on the card).
+    rules.push('No Thanks! is a card game for three to five players designed by Thorsten Gimmler. Originally called Geschenkt! (presented (as a gift) in German) and published by Amigo Spiele in 2004, it was translated into English by Z-Man Games.');
 
-If a player takes a card, he/she also takes all chips that have been put on the card, that player then flips over the next card
-and decides if he/she want it, and so the game continues until all cards have been taken.
+    rules.push('There are playing cards numbered 3 to 35 in the game, and nine cards are removed from the deck. Each player receives 11 chips. The first player flips over the top card and either takes it (earning him points according to the value) or passes on the card by paying a chip (placing it on the card). If a player takes a card, he/she also takes all chips that have been put on the card, that player then flips over the next card and decides if he/she want it, and so the game continues until all cards have been taken.');
 
-At the end of the game, cards give points according to their value,
-but cards in a row only count as a single card with the lowest value (e.g. A run of 30, 29, 28, 27 is only worth 27 points.)
-Chips are worth one negative point each. The player(s) with the lowest number of points win the game.
+    rules.push('At the end of the game, cards give points according to their value, but cards in a row only count as a single card with the lowest value (e.g. A run of 30, 29, 28, 27 is only worth 27 points.) Chips are worth one negative point each. The player(s) with the lowest number of points win the game.');
+    
+    rules.push('No Thanks! was nominated in 2005 for the German Spiel des Jahres (Game of the Year) award.');
 
-No Thanks! was nominated in 2005 for the German Spiel des Jahres (Game of the Year) award`;
     return rules;
   }
 
@@ -195,7 +190,7 @@ No Thanks! was nominated in 2005 for the German Spiel des Jahres (Game of the Ye
   }
 
   private updatePlayerPlaces = (players: NoThanksPlayer[]): NoThanksPlayer[] => {
-    const playersPlaces = [];
+    const playersPlaces: Array<{ id: string, points: number }> = [];
 
     players.forEach(player => {
       playersPlaces.push({ id: player.id, points: player.points });
@@ -204,7 +199,7 @@ No Thanks! was nominated in 2005 for the German Spiel des Jahres (Game of the Ye
     playersPlaces.sort((a, b) => a.points - b.points);
 
     return players.map(player => {
-      let place;
+      let place = 0;
 
       playersPlaces.forEach((playersPlace, i) => {
         if (player.id === playersPlace.id) {
@@ -220,7 +215,7 @@ No Thanks! was nominated in 2005 for the German Spiel des Jahres (Game of the Ye
   }
 
   private getPlayerNumber = ({ userId, players }: { userId: string, players: NoThanksPlayer[] }): number => {
-    let playerNumber;
+    let playerNumber = 0;
 
     players.forEach((player, index) => {
       if (player.id === userId) {
