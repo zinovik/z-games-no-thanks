@@ -28,7 +28,7 @@ You can check [back-end part](https://github.com/zinovik/z-games-api) or [fron-e
 1. Typescript
 2. NodeJS
 3. Socket.io
-4. Express
+4. NestJS
 5. React
 6. Redux
 
