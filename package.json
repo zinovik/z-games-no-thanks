@@ -1,11 +1,17 @@
 {
   "name": "z-games-no-thanks",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "description": "No, Thanks! game module for tiny board games portal",
   "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "scripts": {
     "build": "tsc",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest --config jestconfig.json",
+    "format": "prettier --write \"src/**/*.ts\" \"src/**/*.js\"",
+    "lint": "tslint -p tsconfig.json",
+    "prepare": "npm run build",
+    "prepublishOnly": "npm test && npm run lint",
+    "preversion": "npm run lint"
   },
   "repository": {
     "type": "git",
@@ -14,13 +20,22 @@
   "author": "Max Zinovik",
   "license": "Apache-2.0",
   "bugs": {
-    "url": "https://github.com/zinovik/z-games-no-thanks/issues"
+    "url": "https://github.com/zinovik/z-games-api/issues"
   },
   "homepage": "https://github.com/zinovik/z-games-no-thanks#readme",
   "devDependencies": {
-    "typescript": "^3.3.3"
+    "@types/jest": "^24.0.9",
+    "jest": "^24.1.0",
+    "prettier": "^1.16.4",
+    "ts-jest": "^24.0.0",
+    "tslint": "^5.13.1",
+    "tslint-config-prettier": "^1.18.0",
+    "typescript": "^3.3.3333"
   },
   "dependencies": {
-    "z-games-base-game": "0.0.9"
-  }
+    "z-games-base-game": "0.0.10"
+  },
+  "files": [
+    "lib/**/*"
+  ]
 }
