@@ -1,9 +1,9 @@
 {
   "name": "z-games-no-thanks",
-  "version": "0.0.9",
+  "version": "0.0.10",
   "description": "No, Thanks! game module for tiny board games portal",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
   "scripts": {
     "build": "tsc",
     "test": "jest --config jestconfig.json",
@@ -33,7 +33,7 @@
     "typescript": "^3.3.3333"
   },
   "dependencies": {
-    "z-games-base-game": "0.0.10"
+    "z-games-base-game": "0.0.11"
   },
   "files": [
     "lib/**/*"
