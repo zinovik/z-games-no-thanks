@@ -1,7 +1,15 @@
 language: node_js
 node_js:
-  - "lts/*"
-
+- "10"
 script:
-  - yarn run lint
-  - yarn run test
+- yarn run lint
+- yarn run test
+deploy:
+  provider: npm
+  email: zinovik@gmail.com
+  on:
+    repo: zinovik/z-games-no-thanks
+    branch: master
+  skip_cleanup: true
+  api_key:
+    secure: Ec64z+Y8d5JBUgYIiGN5v8Rjb019f0d1f0CdG3Y5f2sOroX4EBe+s5tceg5e8wPikam3WrT6FHiBkYvgS1uKa6IUDP8p+6hnIH/wJ0z3z9rDJ8OhvsyYYOJXUmR2hHztUTmiRPzu8FFys/GxkW9ixEQzsgkXJsI/z3ysNgGFSHL2yOcqNAlGbQlddhJJ3cGbpmt8Rd1uxAguzNzVFWWJAVSpP3UqT9PRLFgVDOqYkny+I4WW9aUCjF4P4/GTkC3Um9ViCciYDCQX47A6gmFu8k70kIvPxGKjLGXXovA6NrorVR3sRg/sWOnsS7yog/f9jwjqvjaF+S7NYkrSJWbXDr1MQK1A3AmVccnOAHeO3iuf74dKhDWAqxKu7D5jTGYuLJXJJcU81+dQ2hTBZMxwgid55nFo/IDU9hFB5lfG9OjW/poppIMsOn1ByTmYaMLQrmiYjzufyxDS4wsOtsUEjrV0Bng9/mzGyx8FpR62JBFgBeXiEIIl7DqJy3JjbnAf2wx1POzvf5u1WgPSHDAt/RJNXeOef8djUo6gR6ss8omqVZLE8RosNghqomPlYqlJ9IABmWjzj4PG1ZxQ8ayKbNPhK4B62tEbE/WiPRfRu4Bpl04b0ral4wiV+h5IbcRroH7p6BCwHC1ffP2NkGo3HPqEp3J9ClI6gWiLiNY+3Q0=
