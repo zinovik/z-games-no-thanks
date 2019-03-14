@@ -26,6 +26,8 @@ export interface NoThanksMove extends BaseGameMove {
   takeCard: boolean;
 }
 
+export const NO_THANKS = 'No, Thanks!';
+
 export class NoThanks extends BaseGame {
   private static instance: NoThanks;
 
