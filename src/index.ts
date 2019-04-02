@@ -1,32 +1,23 @@
-import { BaseGame, BaseGameData, BaseGameMove, BaseGamePlayer } from 'z-games-base-game';
+import { BaseGame } from 'z-games-base-game';
 
-const PLAYERS_MIN = 1; // TODO: 3
-const PLAYERS_MAX = 5;
+import {
+  INoThanksData,
+  INoThanksPlayer,
+  INoThanksMove,
+} from './interfaces';
+import {
+  NAME,
+  NAME_WORK,
+  PLAYERS_MIN,
+  PLAYERS_MAX,
+  MIN_NUMBER,
+  MAX_NUMBER,
+  START_CHIPS_COUNT,
+  EXCESS_CARDS_NUMBER,
+} from './constants';
 
-const MIN_NUMBER = 3;
-const MAX_NUMBER = 35;
-const START_CHIPS_COUNT = 11;
-const EXCESS_CARDS_NUMBER = 9;
-
-export interface NoThanksData extends BaseGameData {
-  cards: number[];
-  currentCard: number;
-  currentCardCost: number;
-  cardsLeft: number;
-  players: NoThanksPlayer[];
-}
-
-export interface NoThanksPlayer extends BaseGamePlayer {
-  cards: number[];
-  chips: number;
-  points: number;
-}
-
-export interface NoThanksMove extends BaseGameMove {
-  takeCard: boolean;
-}
-
-export const NO_THANKS = 'No, Thanks!';
+export * from './interfaces';
+export * from './constants';
 
 export class NoThanks extends BaseGame {
   private static instance: NoThanks;
@@ -35,8 +26,16 @@ export class NoThanks extends BaseGame {
     return this.instance || (this.instance = new this());
   }
 
+  public getName = (): string => {
+    return NAME;
+  }
+
+  public getNameWork = (): string => {
+    return NAME_WORK;
+  }
+
   public getNewGame = (): { playersMax: number, playersMin: number, gameData: string } => {
-    const gameData: NoThanksData = {
+    const gameData: INoThanksData = {
       cards: [],
       cardsLeft: 0,
       currentCard: 0,
@@ -52,7 +51,7 @@ export class NoThanks extends BaseGame {
   }
 
   public startGame = (gameDataJSON: string): { gameData: string, nextPlayersIds: string[] } => {
-    const gameData: NoThanksData = JSON.parse(gameDataJSON);
+    const gameData: INoThanksData = JSON.parse(gameDataJSON);
     const { cards } = gameData;
     let { players } = gameData;
 
@@ -93,7 +92,7 @@ export class NoThanks extends BaseGame {
   }
 
   public parseGameDataForUser = ({ gameData: gameDataJSON, userId }: { gameData: string, userId: string }): string => {
-    const gameData: NoThanksData = JSON.parse(gameDataJSON);
+    const gameData: INoThanksData = JSON.parse(gameDataJSON);
 
     gameData.players.forEach((player, index) => {
       if (player.id !== userId) {
@@ -108,12 +107,35 @@ export class NoThanks extends BaseGame {
     return JSON.stringify({ ...gameData, cards: [] });
   }
 
+  public checkMove = ({ gameData: gameDataJSON, move: moveJSON, userId }: {
+    gameData: string,
+    move: string,
+    userId: string,
+  }): boolean => {
+    const gameData: INoThanksData = JSON.parse(gameDataJSON);
+    const move: INoThanksMove = JSON.parse(moveJSON);
+
+    const { players } = gameData;
+
+    const playerNumber = this.getPlayerNumber({ userId, players });
+
+    if (!move.takeCard && !players[playerNumber].chips) {
+      return false;
+    }
+
+    return true;
+  }
+
   public makeMove = ({ gameData: gameDataJSON, move: moveJSON, userId }: { gameData: string, move: string, userId: string }): {
     gameData: string,
     nextPlayersIds: string[],
   } => {
-    const gameData: NoThanksData = JSON.parse(gameDataJSON);
-    const move: NoThanksMove = JSON.parse(moveJSON);
+    if (!this.checkMove({ gameData: gameDataJSON, move: moveJSON, userId })) {
+      throw new Error('Impossible move!');
+    }
+
+    const gameData: INoThanksData = JSON.parse(gameDataJSON);
+    const move: INoThanksMove = JSON.parse(moveJSON);
 
     const { cards } = gameData;
     let { currentCard, currentCardCost, cardsLeft, players } = gameData;
@@ -129,10 +151,6 @@ export class NoThanks extends BaseGame {
       cardsLeft = cards.length;
       currentCardCost = 0;
     } else {
-      if (!players[playerNumber].chips) {
-        throw new Error('You have no chips to pay');
-      }
-
       players[playerNumber].chips--;
       currentCardCost++;
     }
@@ -184,7 +202,7 @@ export class NoThanks extends BaseGame {
     return rules;
   }
 
-  private getPointsForPlayer = (player: NoThanksPlayer): number => {
+  private getPointsForPlayer = (player: INoThanksPlayer): number => {
     let points = 0;
     let lastCard = 0;
 
@@ -199,7 +217,7 @@ export class NoThanks extends BaseGame {
     return points - player.chips;
   }
 
-  private updatePlayerPlaces = (players: NoThanksPlayer[]): NoThanksPlayer[] => {
+  private updatePlayerPlaces = (players: INoThanksPlayer[]): INoThanksPlayer[] => {
     const playersPlaces: Array<{ id: string, points: number }> = [];
 
     players.forEach(player => {
@@ -224,7 +242,7 @@ export class NoThanks extends BaseGame {
     });
   }
 
-  private getPlayerNumber = ({ userId, players }: { userId: string, players: NoThanksPlayer[] }): number => {
+  private getPlayerNumber = ({ userId, players }: { userId: string, players: INoThanksPlayer[] }): number => {
     let playerNumber = 0;
 
     players.forEach((player, index) => {
