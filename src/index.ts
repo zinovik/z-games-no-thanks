@@ -34,6 +34,10 @@ export class NoThanks extends BaseGame {
     return NAME_WORK;
   }
 
+  public getOptionsVariants = (): Array<{ name: string, values: string[] }> => {
+    return [];
+  }
+
   public getNewGame = (): { playersMax: number, playersMin: number, gameData: string } => {
     const gameData: INoThanksData = {
       cards: [],
@@ -41,6 +45,7 @@ export class NoThanks extends BaseGame {
       currentCard: 0,
       currentCardCost: 0,
       players: [],
+      options: [],
     };
 
     return {
