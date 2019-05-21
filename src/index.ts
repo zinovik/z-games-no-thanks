@@ -35,7 +35,9 @@ export class NoThanks extends BaseGame {
   }
 
   public getOptionsVariants = (): Array<{ name: string, values: string[] }> => {
-    return [];
+    return [
+      ...super.getOptionsVariants(),
+    ];
   }
 
   public getNewGame = (): { playersMax: number, playersMin: number, gameData: string } => {
@@ -45,7 +47,10 @@ export class NoThanks extends BaseGame {
       currentCard: 0,
       currentCardCost: 0,
       players: [],
-      options: [],
+      options: [{
+        name: 'Max Time',
+        value: '1 hour',
+      }],
     };
 
     return {
