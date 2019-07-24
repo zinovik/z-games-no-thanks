@@ -1,4 +1,4 @@
-import { NoThanks } from '../';
+import { NoThanks } from '../src';
 
 test('create new game instance', () => {
   const noThanks = NoThanks.Instance;

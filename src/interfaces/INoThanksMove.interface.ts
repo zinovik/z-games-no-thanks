@@ -1,5 +1,3 @@
-import { IBaseGameMove } from 'z-games-base-game';
-
-export interface INoThanksMove extends IBaseGameMove {
+export interface INoThanksMove {
   takeCard: boolean;
 }

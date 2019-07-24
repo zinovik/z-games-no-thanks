@@ -1,26 +1,12 @@
 import { BaseGame } from 'z-games-base-game';
 
-import {
-  INoThanksData,
-  INoThanksPlayer,
-  INoThanksMove,
-} from './interfaces';
-import {
-  NAME,
-  NAME_WORK,
-  PLAYERS_MIN,
-  PLAYERS_MAX,
-  MIN_NUMBER,
-  MAX_NUMBER,
-  START_CHIPS_COUNT,
-  EXCESS_CARDS_NUMBER,
-} from './constants';
+import { INoThanksData, INoThanksPlayer, INoThanksMove } from './interfaces';
+import { NAME, NAME_WORK, PLAYERS_MIN, PLAYERS_MAX, MIN_NUMBER, MAX_NUMBER, START_CHIPS_COUNT, EXCESS_CARDS_NUMBER } from './constants';
 
 export * from './interfaces';
 export * from './constants';
 
 export class NoThanks extends BaseGame {
-
   private static instance: NoThanks;
 
   public static get Instance() {
@@ -29,29 +15,29 @@ export class NoThanks extends BaseGame {
 
   public getName = (): string => {
     return NAME;
-  }
+  };
 
   public getNameWork = (): string => {
     return NAME_WORK;
+  };
+
+  public getOptionsVariants(): Array<{ name: string; values: string[] }> {
+    return [...super.getOptionsVariants()];
   }
 
-  public getOptionsVariants(): Array<{ name: string, values: string[] }> {
-    return [
-      ...super.getOptionsVariants(),
-    ];
-  }
-
-  public getNewGame = (): { playersMax: number, playersMin: number, gameData: string } => {
+  public getNewGame = (): { playersMax: number; playersMin: number; gameData: string } => {
     const gameData: INoThanksData = {
       cards: [],
       cardsLeft: 0,
       currentCard: 0,
       currentCardCost: 0,
       players: [],
-      options: [{
-        name: 'Max Time',
-        value: '1 hour',
-      }],
+      options: [
+        {
+          name: 'Max Time',
+          value: '1 hour',
+        },
+      ],
     };
 
     return {
@@ -59,9 +45,9 @@ export class NoThanks extends BaseGame {
       playersMin: PLAYERS_MIN,
       gameData: JSON.stringify(gameData),
     };
-  }
+  };
 
-  public startGame = (gameDataJSON: string): { gameData: string, nextPlayersIds: string[] } => {
+  public startGame = (gameDataJSON: string): { gameData: string; nextPlayersIds: string[] } => {
     const gameData: INoThanksData = JSON.parse(gameDataJSON);
     const { cards } = gameData;
     let { players } = gameData;
@@ -98,11 +84,12 @@ export class NoThanks extends BaseGame {
         currentCard,
         currentCardCost,
         players,
-      }), nextPlayersIds,
+      }),
+      nextPlayersIds,
     };
-  }
+  };
 
-  public parseGameDataForUser = ({ gameData: gameDataJSON, userId }: { gameData: string, userId: string }): string => {
+  public parseGameDataForUser = ({ gameData: gameDataJSON, userId }: { gameData: string; userId: string }): string => {
     const gameData: INoThanksData = JSON.parse(gameDataJSON);
 
     gameData.players.forEach((player, index) => {
@@ -116,13 +103,9 @@ export class NoThanks extends BaseGame {
     });
 
     return JSON.stringify({ ...gameData, cards: [] });
-  }
+  };
 
-  public checkMove = ({ gameData: gameDataJSON, move: moveJSON, userId }: {
-    gameData: string,
-    move: string,
-    userId: string,
-  }): boolean => {
+  public checkMove = ({ gameData: gameDataJSON, move: moveJSON, userId }: { gameData: string; move: string; userId: string }): boolean => {
     const gameData: INoThanksData = JSON.parse(gameDataJSON);
     const move: INoThanksMove = JSON.parse(moveJSON);
 
@@ -135,11 +118,19 @@ export class NoThanks extends BaseGame {
     }
 
     return true;
-  }
+  };
 
-  public makeMove = ({ gameData: gameDataJSON, move: moveJSON, userId }: { gameData: string, move: string, userId: string }): {
-    gameData: string,
-    nextPlayersIds: string[],
+  public makeMove = ({
+    gameData: gameDataJSON,
+    move: moveJSON,
+    userId,
+  }: {
+    gameData: string;
+    move: string;
+    userId: string;
+  }): {
+    gameData: string;
+    nextPlayersIds: string[];
   } => {
     if (!this.checkMove({ gameData: gameDataJSON, move: moveJSON, userId })) {
       throw new Error('Impossible move!');
@@ -191,27 +182,33 @@ export class NoThanks extends BaseGame {
       }),
       nextPlayersIds,
     };
-  }
+  };
 
   public getRules = (): string[] => {
     const rules = [];
 
-    rules.push('No Thanks! is a card game for three to five players designed by Thorsten Gimmler. Originally called Geschenkt! (presented '
-      + '(as a gift) in German) and published by Amigo Spiele in 2004, it was translated into English by Z-Man Games.');
+    rules.push(
+      'No Thanks! is a card game for three to five players designed by Thorsten Gimmler. Originally called Geschenkt! (presented ' +
+        '(as a gift) in German) and published by Amigo Spiele in 2004, it was translated into English by Z-Man Games.',
+    );
 
-    rules.push('There are playing cards numbered 3 to 35 in the game, and nine cards are removed from the deck. Each player receives 11 chips. '
-      + 'The first player flips over the top card and either takes it (earning him points according to the value) or passes on the card by paying '
-      + 'a chip (placing it on the card). If a player takes a card, he/she also takes all chips that have been put on the card, that player then '
-      + 'flips over the next card and decides if he/she want it, and so the game continues until all cards have been taken.');
+    rules.push(
+      'There are playing cards numbered 3 to 35 in the game, and nine cards are removed from the deck. Each player receives 11 chips. ' +
+        'The first player flips over the top card and either takes it (earning him points according to the value) or passes on the card by paying ' +
+        'a chip (placing it on the card). If a player takes a card, he/she also takes all chips that have been put on the card, that player then ' +
+        'flips over the next card and decides if he/she want it, and so the game continues until all cards have been taken.',
+    );
 
-    rules.push('At the end of the game, cards give points according to their value, but cards in a row only count as a single card with the lowest '
-      + 'value (e.g. A run of 30, 29, 28, 27 is only worth 27 points.) Chips are worth one negative point each. The player(s) with the lowest '
-      + 'number of points win the game.');
+    rules.push(
+      'At the end of the game, cards give points according to their value, but cards in a row only count as a single card with the lowest ' +
+        'value (e.g. A run of 30, 29, 28, 27 is only worth 27 points.) Chips are worth one negative point each. The player(s) with the lowest ' +
+        'number of points win the game.',
+    );
 
     rules.push('No Thanks! was nominated in 2005 for the German Spiel des Jahres (Game of the Year) award.');
 
     return rules;
-  }
+  };
 
   private getPointsForPlayer = (player: INoThanksPlayer): number => {
     let points = 0;
@@ -226,10 +223,10 @@ export class NoThanks extends BaseGame {
     });
 
     return points - player.chips;
-  }
+  };
 
   private updatePlayerPlaces = (players: INoThanksPlayer[]): INoThanksPlayer[] => {
-    const playersPlaces: Array<{ id: string, points: number }> = [];
+    const playersPlaces: Array<{ id: string; points: number }> = [];
 
     players.forEach(player => {
       playersPlaces.push({ id: player.id, points: player.points });
@@ -251,9 +248,9 @@ export class NoThanks extends BaseGame {
         place,
       };
     });
-  }
+  };
 
-  private getPlayerNumber = ({ userId, players }: { userId: string, players: INoThanksPlayer[] }): number => {
+  private getPlayerNumber = ({ userId, players }: { userId: string; players: INoThanksPlayer[] }): number => {
     let playerNumber = 0;
 
     players.forEach((player, index) => {
@@ -263,5 +260,5 @@ export class NoThanks extends BaseGame {
     });
 
     return playerNumber;
-  }
+  };
 }

@@ -1,6 +1,6 @@
 {
   "name": "z-games-no-thanks",
-  "version": "0.0.16",
+  "version": "0.0.17",
   "description": "No, Thanks! game module for tiny board games portal",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
@@ -14,8 +14,8 @@
     "preversion": "npm run lint"
   },
   "engines": {
-    "node": "12.0.0",
-    "npm": "6.9.0"
+    "node": ">=12.6",
+    "npm": ">=6.9"
   },
   "repository": {
     "type": "git",
@@ -28,16 +28,16 @@
   },
   "homepage": "https://github.com/zinovik/z-games-no-thanks#readme",
   "devDependencies": {
-    "@types/jest": "^24.0.13",
+    "@types/jest": "^24.0.15",
     "jest": "^24.8.0",
-    "prettier": "^1.17.1",
+    "prettier": "^1.18.2",
     "ts-jest": "^24.0.2",
-    "tslint": "^5.16.0",
+    "tslint": "^5.18.0",
     "tslint-config-prettier": "^1.18.0",
-    "typescript": "^3.4.5"
+    "typescript": "^3.5.3"
   },
   "dependencies": {
-    "z-games-base-game": "0.0.20"
+    "z-games-base-game": "0.0.21"
   },
   "files": [
     "lib/**/*"
